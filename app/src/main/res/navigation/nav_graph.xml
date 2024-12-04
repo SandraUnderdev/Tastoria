@@ -2,10 +2,21 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/recipeListFragment">
+    app:startDestination="@id/nav_home">
 
     <fragment
-        android:id="@+id/recipeListFragment"
+        android:id="@+id/nav_home"
+        android:name="com.example.tastoria.view.TastoriaHomeFragment"
+        android:label="Tastoria"
+        tools:layout="@layout/fragment_tastoria_home">
+        <action
+            android:id="@+id/action_navHome_to_recipeListFragment"
+            app:destination="@id/nav_search" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_search"
         android:name="com.example.tastoria.view.RecipeListFragment"
         android:label="Recipe List"
         tools:layout="@layout/fragment_recipe_list">
@@ -27,4 +38,22 @@
             android:name="id"
             app:argType="integer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_saved"
+        android:name="com.example.tastoria.view.TastoriaSavedFragment"
+        android:label="Saved"
+        tools:layout="@layout/fragment_tastoria_saved" />
+
+    <fragment
+        android:id="@+id/nav_meal_planner"
+        android:name="com.example.tastoria.view.TastoriaMealPlannerFragment"
+        android:label="Meal Planner"
+        tools:layout="@layout/fragment_tastoria_meal_planner" />
+
+    <fragment
+        android:id="@+id/nav_special_diet"
+        android:name="com.example.tastoria.view.SpecialDietFragment"
+        android:label="Special Diet"
+        tools:layout="@layout/fragment_special_diet" />
 </navigation>

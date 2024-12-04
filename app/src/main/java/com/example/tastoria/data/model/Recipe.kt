@@ -1,10 +1,14 @@
 package com.example.tastoria.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+
 data class Recipe(
-    val analyzedInstructions: List<Any>,
+    val analyzedInstructions: List<AnalyzedInstruction>,
     val cheap: Boolean,
     val cookingMinutes: Int,
-    val creditsText: String,
+    val creditsText: String?,
     val cuisines: List<Any>,
     val dairyFree: Boolean,
     val diets: List<Any>,
@@ -38,5 +42,16 @@ data class Recipe(
     val veryPopular: Boolean,
     val weightWatcherSmartPoints: Int,
     val whole30: Boolean,
-    val winePairing: WinePairing
+    val winePairing: WinePairing,
+    var favorite: Boolean = false
+)
+
+data class InstructionStep(
+    val number: Int,
+    val step: String
+)
+
+data class AnalyzedInstruction(
+    val name: String,
+    val steps: List<InstructionStep>
 )

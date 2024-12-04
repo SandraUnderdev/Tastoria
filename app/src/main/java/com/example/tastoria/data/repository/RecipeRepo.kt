@@ -5,8 +5,8 @@ import com.example.tastoria.data.remote.ApiService
 
 class RecipeRepo(private val apiService: ApiService) {
 
-    suspend fun getRecipes(apiKey: String): List<Recipe> {
-        val response = apiService.getRecipes(apiKey)
+    suspend fun getRecipes(query : String, apiKey: String): List<Recipe> {
+        val response = apiService.getRecipes(query, apiKey)
         return response.results
     }
 

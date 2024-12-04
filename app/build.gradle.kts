@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -36,6 +37,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -77,6 +79,24 @@ dependencies {
     // Testing Navigation
     androidTestImplementation(libs.androidx.navigation.testing)
 
-    implementation ("com.squareup.picasso:picasso:2.71828")
+    implementation (libs.picasso)
+    implementation(libs.androidx.core.splashscreen)
 
+
+    implementation(libs.androidx.paging.runtime)
+
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+
+    // Room Database dependency
+  //  implementation(libs.androidx.room.runtime.v250)
+
+    // Room KTX dependency for coroutine support
+    implementation (libs.androidx.room.ktx)
+
+    // Room compiler (for annotation processing)
+    //kapt(libs.androidx.room.compiler.v250)
+
+    // Coroutine support library (if not already added)
+    implementation (libs.kotlinx.coroutines.android)
 }

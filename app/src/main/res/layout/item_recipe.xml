@@ -1,45 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="16dp"
     android:backgroundTint="@android:color/white"
     android:elevation="4dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="4dp"
     tools:context="view.RecipeAdapter">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/recipeImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="120dp"
+            android:layout_height="100dp"
             android:layout_marginEnd="16dp"
             android:contentDescription="recipe_image"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/recipeTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="Recipe Title"
+            android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/favorite"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/recipeImage"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <Button
-            android:id="@+id/favoriteButton"
-            android:background="@drawable/favorite"
+            android:id="@+id/favorite"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/favorite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/recipeTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/recipeTitle"
+            app:layout_constraintVertical_bias="0.5" />
 
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

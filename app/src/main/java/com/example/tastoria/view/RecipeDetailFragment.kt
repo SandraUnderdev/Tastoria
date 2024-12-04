@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.tastoria.data.database.RecipeDatabase
 import com.example.tastoria.data.remote.RetrofitInstance
 import com.example.tastoria.data.repository.RecipeRepo
 import com.example.tastoria.databinding.FragmentRecipeDetailBinding
@@ -19,7 +20,7 @@ class RecipeDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentRecipeDetailBinding
     private val recipeViewModel: RecipeViewModel by viewModels {
-        RecipeViewModelFactory(RecipeRepo(RetrofitInstance.ApiClient.apiService))
+        RecipeViewModelFactory(RecipeRepo(RetrofitInstance.ApiClient.apiService, RecipeDatabase.getDatabase(requireContext()).recipeDao()))
     }
 
     override fun onCreateView(
@@ -36,10 +37,12 @@ class RecipeDetailFragment : Fragment() {
         val recipeId = arguments?.getInt("id") ?: return
 
         recipeViewModel.fetchRecipe(recipeId, "31a9421e99f242a1a134e8c60503c461")
+//        val apiKey = BuildConfig.API_KEY
+//        recipeViewModel.fetchRecipes("", apiKey)
 
         recipeViewModel.recipeDetail.observe(viewLifecycleOwner) { recipe ->
             binding.recipeTitle.text = recipe.title
-          // binding.recipeSteps.text = recipe.instructions
+
             binding.recipeReadyIn.text = "Ready in ${recipe.readyInMinutes} minutes"
             binding.recipeServings.text = "Servings: ${recipe.servings}"
             binding.recipeStepsTitle.text = "Instructions"

@@ -4,17 +4,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tastoria.data.model.FavoriteRecipe
 import com.example.tastoria.data.model.Recipe
 import com.example.tastoria.databinding.ItemRecipeBinding
 import com.squareup.picasso.Picasso
 
-class RecipeAdapter(private val onItemClicked: (Int) -> Unit) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter(private val onItemClicked: (Int) -> Unit,
+                    private val onFavoriteClick: (Recipe) -> Unit) :
+    RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
 
     private var recipeList = mutableListOf<Recipe>()
 
 
-    inner class RecipeViewHolder(private val binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class RecipeViewHolder(private val binding: ItemRecipeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(recipe: Recipe) {
 
@@ -27,6 +31,10 @@ class RecipeAdapter(private val onItemClicked: (Int) -> Unit) : RecyclerView.Ada
 
             itemView.setOnClickListener {
                 onItemClicked(recipe.id)
+            }
+
+            binding.favoriteButton.setOnClickListener {
+                onFavoriteClick(recipe)
             }
         }
     }

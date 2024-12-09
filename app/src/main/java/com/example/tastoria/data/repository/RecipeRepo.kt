@@ -1,5 +1,6 @@
 package com.example.tastoria.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.tastoria.data.database.Favorite
@@ -29,6 +30,7 @@ class RecipeRepo(private val apiService: ApiService, private val favoriteDao: Fa
         val favorite = Favorite(id = recipe.id, title = recipe.title, image = recipe.image)
         favoriteDao.deleteFavorite(favorite)
     }
+
     suspend fun getAllFavorites(): LiveData<List<Recipe>> {
         return favoriteDao.getAllFavorites().map { favorites ->
             favorites.map {

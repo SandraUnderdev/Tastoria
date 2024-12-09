@@ -1,6 +1,7 @@
 package com.example.tastoria.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +52,10 @@ class TastoriaSavedFragment : Fragment() {
         binding.favoriteRecyclerView.layoutManager = LinearLayoutManager(context)
 
         recipeViewModel.fetchAllFavorites()
+
+        recipeViewModel.recipeList.observe(viewLifecycleOwner) { recipes ->
+            favoriteAdapter.setRecipeList(recipes)
+        }
     }
 }
 

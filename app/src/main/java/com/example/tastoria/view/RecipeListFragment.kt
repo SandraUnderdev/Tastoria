@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tastoria.data.database.FavoriteDatabase
 import com.example.tastoria.data.remote.RetrofitInstance
 import com.example.tastoria.data.repository.RecipeRepo
 import com.example.tastoria.databinding.FragmentRecipeListBinding
@@ -21,7 +22,9 @@ class RecipeListFragment : Fragment() {
 
     private lateinit var binding: FragmentRecipeListBinding
     private val recipeViewModel: RecipeViewModel by viewModels {
-        RecipeViewModelFactory(RecipeRepo(RetrofitInstance.ApiClient.apiService))
+        val favoriteDao = FavoriteDatabase.invoke(requireContext()).favoriteRecipeDao()
+        val recipeRepo = RecipeRepo(RetrofitInstance.ApiClient.apiService, favoriteDao)
+        RecipeViewModelFactory(recipeRepo)
     }
 
     private lateinit var recipeAdapter: RecipeAdapter
@@ -41,12 +44,17 @@ class RecipeListFragment : Fragment() {
 
         (activity as? AppCompatActivity)?.supportActionBar?.hide()
 
-        recipeAdapter = RecipeAdapter { recipeId ->
+        recipeAdapter = RecipeAdapter(
+            onItemClicked = { recipeId ->
+                val action =
+                    RecipeListFragmentDirections.actionRecipeListFragmentToRecipeDetailFragment(recipeId)
+                findNavController().navigate(action)
+            },
+            onFavoriteClicked = { recipe ->
+                recipeViewModel.toggleFavorite(recipe)
+            }
+        )
 
-            val action =
-                RecipeListFragmentDirections.actionRecipeListFragmentToRecipeDetailFragment(recipeId)
-            findNavController().navigate(action)
-        }
 
         binding.recipeRecyclerView.adapter = recipeAdapter
         binding.recipeRecyclerView.layoutManager = LinearLayoutManager(context)

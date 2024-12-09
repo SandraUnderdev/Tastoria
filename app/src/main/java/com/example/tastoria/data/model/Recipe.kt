@@ -43,7 +43,7 @@ data class Recipe(
     val weightWatcherSmartPoints: Int,
     val whole30: Boolean,
     val winePairing: WinePairing,
-    var favorite: Boolean = false
+    var isFavorite: Boolean = false
 )
 
 data class InstructionStep(

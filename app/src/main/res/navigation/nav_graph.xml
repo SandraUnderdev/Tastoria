@@ -11,12 +11,12 @@
         tools:layout="@layout/fragment_tastoria_home">
         <action
             android:id="@+id/action_navHome_to_recipeListFragment"
-            app:destination="@id/nav_search" />
+            app:destination="@id/recipeListFragment" />
     </fragment>
 
 
     <fragment
-        android:id="@+id/nav_search"
+        android:id="@+id/recipeListFragment"
         android:name="com.example.tastoria.view.RecipeListFragment"
         android:label="Recipe List"
         tools:layout="@layout/fragment_recipe_list">
@@ -40,7 +40,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_saved"
+        android:id="@+id/tastoriaSavedFragment"
         android:name="com.example.tastoria.view.TastoriaSavedFragment"
         android:label="Saved"
         tools:layout="@layout/fragment_tastoria_saved" />

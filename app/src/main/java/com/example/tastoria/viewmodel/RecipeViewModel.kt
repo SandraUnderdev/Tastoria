@@ -41,4 +41,24 @@ class RecipeViewModel(private val repository: RecipeRepo) : ViewModel() {
             }
         }
     }
+
+    fun toggleFavorite(recipe: Recipe) {
+        viewModelScope.launch {
+            if (recipe.isFavorite) {
+                repository.removeFromFavorites(recipe)
+            } else {
+                repository.addToFavorites(recipe)
+            }
+            recipe.isFavorite = !recipe.isFavorite
+        }
+    }
+
+    fun fetchAllFavorites() {
+        viewModelScope.launch {
+            val favoritesLiveData = repository.getAllFavorites()  // This returns LiveData
+            favoritesLiveData.observeForever { favorites ->
+                _recipeList.postValue(favorites)  // Update the list with favorite recipes
+            }
+        }
+    }
 }

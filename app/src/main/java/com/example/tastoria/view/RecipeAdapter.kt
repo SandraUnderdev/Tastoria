@@ -4,11 +4,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tastoria.R
 import com.example.tastoria.data.model.Recipe
 import com.example.tastoria.databinding.ItemRecipeBinding
 import com.squareup.picasso.Picasso
 
-class RecipeAdapter(private val onItemClicked: (Int) -> Unit) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter(
+    private val onItemClicked: (Int) -> Unit,
+    private val onFavoriteClicked: (Recipe) -> Unit) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
 
     private var recipeList = mutableListOf<Recipe>()
@@ -21,12 +24,21 @@ class RecipeAdapter(private val onItemClicked: (Int) -> Unit) : RecyclerView.Ada
             binding.recipeTitle.text = recipe.title
             Picasso.get().load(recipe.image).into(binding.recipeImage)
 
+            if (recipe.isFavorite) {
+                binding.favorite.setImageResource(R.drawable.favorite_filled)
+            } else {
+                binding.favorite.setImageResource(R.drawable.favorite)
+            }
 
             Log.d("RecipeAdapter", "Binding recipe: ${recipe.title}")
 
 
             itemView.setOnClickListener {
                 onItemClicked(recipe.id)
+            }
+
+            binding.favorite.setOnClickListener {
+                onFavoriteClicked(recipe)
             }
         }
     }

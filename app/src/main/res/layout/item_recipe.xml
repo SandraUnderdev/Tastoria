@@ -46,7 +46,7 @@
             app:layout_constraintStart_toEndOf="@+id/recipeImage"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <ImageButton
             android:id="@+id/favorite"
             android:layout_width="22dp"
             android:layout_height="22dp"

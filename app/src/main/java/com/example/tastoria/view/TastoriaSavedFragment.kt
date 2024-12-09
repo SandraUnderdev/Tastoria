@@ -20,7 +20,7 @@ class TastoriaSavedFragment : Fragment() {
 
     private lateinit var binding: FragmentTastoriaSavedBinding
     private val recipeViewModel: RecipeViewModel by viewModels {
-        val favoriteDao = FavoriteDatabase.invoke(requireContext()).favoriteRecipeDao()
+        val favoriteDao = FavoriteDatabase.invoke(requireContext()).getFavoriteDao()
         val recipeRepo = RecipeRepo(RetrofitInstance.ApiClient.apiService, favoriteDao)
         RecipeViewModelFactory(recipeRepo)
     }
@@ -40,8 +40,8 @@ class TastoriaSavedFragment : Fragment() {
 
         favoriteAdapter = RecipeAdapter(
             onItemClicked = { recipeId ->
-                val action =
-                    TastoriaSavedFragmentDirections.actionTastoriaSavedFragmentToRecipeDetailFragment(recipeId)
+                val action = TastoriaSavedFragmentDirections
+                    .actionTastoriaSavedFragmentToRecipeDetailFragment(recipeId)
                 findNavController().navigate(action)
             },
             onFavoriteClicked = {}

@@ -22,7 +22,7 @@ class RecipeRepo(private val apiService: ApiService, private val favoriteDao: Fa
 
     suspend fun addToFavorites(recipe: Recipe) {
         val favorite = Favorite(id = recipe.id, title = recipe.title, image = recipe.image)
-        favoriteDao.insertFavorites(favorite)
+        favoriteDao.insertFavorite(favorite)
     }
 
     suspend fun removeFromFavorites(recipe: Recipe) {
@@ -33,44 +33,10 @@ class RecipeRepo(private val apiService: ApiService, private val favoriteDao: Fa
         return favoriteDao.getAllFavorites().map { favorites ->
             favorites.map {
                 Recipe(
-                    analyzedInstructions = emptyList(),
-                    cheap = false,
-                    cookingMinutes = 0,
-                    creditsText = null,
-                    cuisines = emptyList(),
-                    dairyFree = false,
-                    diets = emptyList(),
-                    dishTypes = emptyList(),
-                    extendedIngredients = emptyList(),
-                    gaps = "",
-                    glutenFree = false,
-                    healthScore = 0.0,
                     id = it.id,
                     image = it.image,
-                    imageType = "",
-                    instructions = "",
-                    ketogenic = false,
-                    license = "",
-                    lowFodmap = false,
-                    occasions = emptyList(),
-                    preparationMinutes = 0,
-                    pricePerServing = 0.0,
-                    readyInMinutes = 0,
-                    servings = 0,
-                    sourceName = "",
-                    sourceUrl = "",
-                    spoonacularScore = 0.0,
-                    spoonacularSourceUrl = "",
-                    summary = "",
-                    sustainable = false,
                     title = it.title,
-                    vegan = false,
-                    vegetarian = false,
-                    veryHealthy = false,
-                    veryPopular = false,
-                    weightWatcherSmartPoints = 0,
-                    whole30 = false,
-                    winePairing = WinePairing()
+                    isFavorite = it.isFavorite
                 )
             }
         }

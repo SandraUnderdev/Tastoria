@@ -22,7 +22,7 @@ class RecipeListFragment : Fragment() {
 
     private lateinit var binding: FragmentRecipeListBinding
     private val recipeViewModel: RecipeViewModel by viewModels {
-        val favoriteDao = FavoriteDatabase.invoke(requireContext()).favoriteRecipeDao()
+        val favoriteDao = FavoriteDatabase.invoke(requireContext()).getFavoriteDao()
         val recipeRepo = RecipeRepo(RetrofitInstance.ApiClient.apiService, favoriteDao)
         RecipeViewModelFactory(recipeRepo)
     }

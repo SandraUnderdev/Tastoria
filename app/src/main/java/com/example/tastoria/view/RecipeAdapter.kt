@@ -32,7 +32,6 @@ class RecipeAdapter(
 
             Log.d("RecipeAdapter", "Binding recipe: ${recipe.title}")
 
-
             itemView.setOnClickListener {
                 onItemClicked(recipe.id)
             }

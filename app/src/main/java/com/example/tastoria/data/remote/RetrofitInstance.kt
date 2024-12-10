@@ -4,6 +4,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.seconds
 
 object RetrofitInstance {
     private const val BASE_URL = "https://api.spoonacular.com"
@@ -15,6 +17,9 @@ object RetrofitInstance {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
             .build()
 
         Retrofit.Builder()

@@ -1,6 +1,7 @@
 package com.example.tastoria.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,7 @@ class TastoriaSavedFragment : Fragment() {
 
     private lateinit var binding: FragmentTastoriaSavedBinding
     private val recipeViewModel: RecipeViewModel by viewModels {
-        val favoriteDao = FavoriteDatabase.invoke(requireContext()).favoriteRecipeDao()
+        val favoriteDao = FavoriteDatabase.invoke(requireContext()).getFavoriteDao()
         val recipeRepo = RecipeRepo(RetrofitInstance.ApiClient.apiService, favoriteDao)
         RecipeViewModelFactory(recipeRepo)
     }
@@ -40,8 +41,8 @@ class TastoriaSavedFragment : Fragment() {
 
         favoriteAdapter = RecipeAdapter(
             onItemClicked = { recipeId ->
-                val action =
-                    TastoriaSavedFragmentDirections.actionTastoriaSavedFragmentToRecipeDetailFragment(recipeId)
+                val action = TastoriaSavedFragmentDirections
+                    .actionTastoriaSavedFragmentToRecipeDetailFragment(recipeId)
                 findNavController().navigate(action)
             },
             onFavoriteClicked = {}
@@ -51,6 +52,10 @@ class TastoriaSavedFragment : Fragment() {
         binding.favoriteRecyclerView.layoutManager = LinearLayoutManager(context)
 
         recipeViewModel.fetchAllFavorites()
+
+        recipeViewModel.recipeList.observe(viewLifecycleOwner) { recipes ->
+            favoriteAdapter.setRecipeList(recipes)
+        }
     }
 }
 

@@ -1,15 +1,12 @@
 package com.example.tastoria.view
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.tastoria.R
 import com.example.tastoria.databinding.ActivityMainBinding
 
@@ -38,12 +35,12 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.nav_home)
                     true
                 }
-                R.id.nav_search -> {
-                    navController.navigate(R.id.nav_search)
+                R.id.recipeListFragment -> {
+                    navController.navigate(R.id.recipeListFragment)
                     true
                 }
-                R.id.nav_saved -> {
-                    navController.navigate(R.id.nav_saved)
+                R.id.tastoriaSavedFragment -> {
+                    navController.navigate(R.id.tastoriaSavedFragment)
                     true
                 }
                 R.id.nav_meal_planner -> {
@@ -59,12 +56,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.nav_home, R.id.nav_search, R.id.nav_saved, R.id.nav_meal_planner, R.id.nav_special_diet)
+            setOf(R.id.nav_home, R.id.recipeListFragment, R.id.tastoriaSavedFragment, R.id.nav_meal_planner, R.id.nav_special_diet)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-
     }
 
-
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
 
 }

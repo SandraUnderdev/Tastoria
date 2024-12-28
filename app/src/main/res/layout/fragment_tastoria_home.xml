@@ -6,7 +6,6 @@
     android:background="@drawable/splash"
     tools:context=".view.TastoriaHomeFragment">
 
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"

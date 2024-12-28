@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tastoria.data.database.FavoriteDatabase
 import com.example.tastoria.data.remote.RetrofitInstance
 import com.example.tastoria.data.repository.RecipeRepo
 import com.example.tastoria.databinding.FragmentRecipeListBinding
@@ -21,7 +22,9 @@ class RecipeListFragment : Fragment() {
 
     private lateinit var binding: FragmentRecipeListBinding
     private val recipeViewModel: RecipeViewModel by viewModels {
-        RecipeViewModelFactory(RecipeRepo(RetrofitInstance.ApiClient.apiService))
+        val favoriteDao = FavoriteDatabase.invoke(requireContext()).getFavoriteDao()
+        val recipeRepo = RecipeRepo(RetrofitInstance.ApiClient.apiService, favoriteDao)
+        RecipeViewModelFactory(recipeRepo)
     }
 
     private lateinit var recipeAdapter: RecipeAdapter
@@ -41,12 +44,17 @@ class RecipeListFragment : Fragment() {
 
         (activity as? AppCompatActivity)?.supportActionBar?.hide()
 
-        recipeAdapter = RecipeAdapter { recipeId ->
+        recipeAdapter = RecipeAdapter(
+            onItemClicked = { recipeId ->
+                val action =
+                    RecipeListFragmentDirections.actionRecipeListFragmentToRecipeDetailFragment(recipeId)
+                findNavController().navigate(action)
+            },
+            onFavoriteClicked = { recipe ->
+                recipeViewModel.toggleFavorite(recipe)
+            }
+        )
 
-            val action =
-                RecipeListFragmentDirections.actionRecipeListFragmentToRecipeDetailFragment(recipeId)
-            findNavController().navigate(action)
-        }
 
         binding.recipeRecyclerView.adapter = recipeAdapter
         binding.recipeRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -58,12 +66,12 @@ class RecipeListFragment : Fragment() {
         }
 
         val apiKey = "31a9421e99f242a1a134e8c60503c461"
-        recipeViewModel.fetchRecipes("", apiKey)
+        recipeViewModel.fetchRecipes (apiKey)
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 query.let {
-                    recipeViewModel.fetchRecipes(it, apiKey)
+                    recipeViewModel.fetchRecipes( apiKey)
                 }
                 return true
             }
@@ -71,7 +79,6 @@ class RecipeListFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let {
                     recipeViewModel.fetchRecipes(
-                        it,
                         apiKey
                     )
                 }

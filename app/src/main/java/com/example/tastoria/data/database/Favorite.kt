@@ -8,5 +8,5 @@ data class Favorite(
     @PrimaryKey val id: Int,
     val title: String,
     val image: String,
-    var isFavorite: Boolean = true
+   // var isFavorite: Boolean = true
 )

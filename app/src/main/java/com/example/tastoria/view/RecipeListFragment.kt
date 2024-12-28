@@ -22,7 +22,7 @@ class RecipeListFragment : Fragment() {
 
     private lateinit var binding: FragmentRecipeListBinding
     private val recipeViewModel: RecipeViewModel by viewModels {
-        val favoriteDao = FavoriteDatabase.invoke(requireContext()).favoriteRecipeDao()
+        val favoriteDao = FavoriteDatabase.invoke(requireContext()).getFavoriteDao()
         val recipeRepo = RecipeRepo(RetrofitInstance.ApiClient.apiService, favoriteDao)
         RecipeViewModelFactory(recipeRepo)
     }
@@ -66,12 +66,12 @@ class RecipeListFragment : Fragment() {
         }
 
         val apiKey = "31a9421e99f242a1a134e8c60503c461"
-        recipeViewModel.fetchRecipes("", apiKey)
+        recipeViewModel.fetchRecipes (apiKey)
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 query.let {
-                    recipeViewModel.fetchRecipes(it, apiKey)
+                    recipeViewModel.fetchRecipes( apiKey)
                 }
                 return true
             }
@@ -79,7 +79,6 @@ class RecipeListFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let {
                     recipeViewModel.fetchRecipes(
-                        it,
                         apiKey
                     )
                 }

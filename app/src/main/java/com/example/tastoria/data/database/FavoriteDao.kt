@@ -10,10 +10,13 @@ import androidx.room.Update
 @androidx.room.Dao
 interface FavoriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFavorites(favorite: Favorite)
+    suspend fun insertFavorite(favorite: Favorite)
 
     @Query("SELECT * FROM favorites")
     fun getAllFavorites(): LiveData<List<Favorite>>
+
+    @Query("SELECT id FROM favorites")
+    suspend fun getAllFavouriteIds(): List<Int>
 
     @Update
     suspend fun updateFavorite(favorite: Favorite)

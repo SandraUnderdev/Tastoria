@@ -18,11 +18,11 @@ class RecipeViewModel(private val repository: RecipeRepo) : ViewModel() {
     private val _recipeDetail = MutableLiveData<Recipe>()
     val recipeDetail: LiveData<Recipe> get() = _recipeDetail
 
-    fun fetchRecipes(query: String, apiKey: String) {
+    fun fetchRecipes(apiKey: String) {
         viewModelScope.launch {
             try {
-                val recipes = repository.getRecipes(query, apiKey)
-                Log.d("RecipeViewModel", "Fetched ${recipes.size} recipes.")
+                val recipes = repository.getRecipes( apiKey)
+                Log.i("RecipeViewModel", "Fetched ${recipes.size} recipes.")
                 _recipeList.postValue(recipes)
             } catch (e: Exception) {
                 Log.e("RecipeViewModel", "Error fetching recipes", e)
@@ -44,21 +44,33 @@ class RecipeViewModel(private val repository: RecipeRepo) : ViewModel() {
 
     fun toggleFavorite(recipe: Recipe) {
         viewModelScope.launch {
-            if (recipe.isFavorite) {
-                repository.removeFromFavorites(recipe)
-            } else {
-                repository.addToFavorites(recipe)
+            val updatedRecipe = recipe.copy(isFavorite = !recipe.isFavorite)
+            try {
+                if (updatedRecipe.isFavorite) {
+                    repository.addToFavorites(updatedRecipe)
+                } else {
+                    repository.removeFromFavorites(updatedRecipe)
+                }
+
+                // Update the LiveData to refresh the UI
+                _recipeList.value = _recipeList.value?.map {
+                    if (it.id == updatedRecipe.id) updatedRecipe else it
+                }
+            } catch (e: Exception) {
+                Log.e("RecipeViewModel", "Error toggling favorite", e)
             }
-            recipe.isFavorite = !recipe.isFavorite
         }
     }
+
+
 
     fun fetchAllFavorites() {
         viewModelScope.launch {
             val favoritesLiveData = repository.getAllFavorites()  // This returns LiveData
             favoritesLiveData.observeForever { favorites ->
-                _recipeList.postValue(favorites)  // Update the list with favorite recipes
+                _recipeList.postValue(favorites.map { it.copy(isFavorite = true) })  // Update the list with favorite recipes
             }
         }
     }
 }
+

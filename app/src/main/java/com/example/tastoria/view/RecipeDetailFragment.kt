@@ -20,7 +20,7 @@ class RecipeDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentRecipeDetailBinding
     private val recipeViewModel: RecipeViewModel by viewModels {
-        val favoriteDao = FavoriteDatabase.invoke(requireContext()).favoriteRecipeDao()
+        val favoriteDao = FavoriteDatabase.invoke(requireContext()).getFavoriteDao()
         val recipeRepo = RecipeRepo(RetrofitInstance.ApiClient.apiService, favoriteDao)
         RecipeViewModelFactory(recipeRepo)
     }
@@ -43,7 +43,6 @@ class RecipeDetailFragment : Fragment() {
 
         recipeViewModel.recipeDetail.observe(viewLifecycleOwner) { recipe ->
             binding.recipeTitle.text = recipe.title
-            // binding.recipeSteps.text = recipe.instructions
             binding.recipeReadyIn.text = "Ready in ${recipe.readyInMinutes} minutes"
             binding.recipeServings.text = "Servings: ${recipe.servings}"
             binding.recipeStepsTitle.text = "Instructions"
@@ -57,13 +56,13 @@ class RecipeDetailFragment : Fragment() {
             Picasso.get().load(recipe.image).into(binding.recipeImage)
 
             val steps = recipe.analyzedInstructions
-                .flatMap { it.steps }  // Combine all steps
-                .joinToString("\n\n") { "Step ${it.number}: ${it.step}" }
+                ?.flatMap { it.steps }  // Combine all steps
+                ?.joinToString("\n\n") { "Step ${it.number}: ${it.step}" }
 
             binding.recipeSteps.text = steps
 
             val ingredient = recipe.extendedIngredients
-                .joinToString("\n") { "${it.name}: ${it.amount} ${it.unit}" }
+                ?.joinToString("\n") { "${it.name}: ${it.amount} ${it.unit}" }
             binding.recipeIngredients.text = ingredient
 
 

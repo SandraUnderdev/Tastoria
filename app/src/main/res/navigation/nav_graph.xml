@@ -43,7 +43,15 @@
         android:id="@+id/tastoriaSavedFragment"
         android:name="com.example.tastoria.view.TastoriaSavedFragment"
         android:label="Saved"
-        tools:layout="@layout/fragment_tastoria_saved" />
+        tools:layout="@layout/fragment_tastoria_saved">
+        <action
+            android:id="@+id/action_tastoriaSavedFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment">
+            <argument
+                android:name="id"
+                app:argType="integer" />
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_meal_planner"
